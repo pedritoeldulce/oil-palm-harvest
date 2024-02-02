@@ -1,0 +1,57 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %} {{title}} {% endblock %}
+
+
+{% block navbar%}
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #c7eaff;">
+    <a class="navbar-brand" href="#">
+        <!-- <img src="{{url_for('static', filename='images/palm-oil-pedrito.png')}}" alt="" width="30" height="30">  -->
+        Fundo Pedrito
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Diario</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+            Mis Cosechas
+          </a>
+          <div class="dropdown-menu">
+            <!-- <a class="dropdown-item" href="#">Cosechas</a>
+            <a class="dropdown-item" href="#">Parcelas</a> -->
+            <a class="dropdown-item" href="{{url_for('admin.cosechasjcm')}}">JCM</a>
+            <a class="dropdown-item" href="{{url_for('admin.cosechasbat')}}">Buenos aires</a>
+            <a class="dropdown-item" href="{{url_for('admin.cosechaskm6')}}">KM6</a>
+            <a class="dropdown-item" href="#">GAvilan</a>
+            <a class="dropdown-item" href="#">Culebra</a>
+           
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Empleados</a>
+          </div>
+        </li>
+        
+      </ul>
+     
+    </div>
+  </nav>
+{% endblock %}
+
+{% block content %} 
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% block container %} {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

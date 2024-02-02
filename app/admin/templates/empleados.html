@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{% from 'helpers/_forms.html' import render_field %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block container %}
+<h1>Empleados</h1>
+
+<div class="form-control">
+<div class="row">
+        <div class="col-6">
+            
+            {{render_field(form.nombres, class="form-control", placeholder="Ingrese sus nombres")}}
+            {{render_field(form.apellidos, class="form-control", placeholder="Ingrese sus apellidos")}}
+            
+        </div>
+        <div class="col 6">
+            
+            {{render_field(form.dni, class="form-control", placeholder="Ingrese su DNI")}}
+            {{render_field(form.telefono, class="form-control", placeholder="Ingrese su telefono")}}
+            
+        </div>
+    </div>
+</div>
+
+<div class="form-control mt-2">
+    <div class="row">
+        <div class="col-6">
+            {{render_field(form.f_inicio, class="form-control")}}
+
+        </div>
+        <div class="col-6">
+            <!-- se va activar en cuanto se guarde a un empleado -->
+            {{render_field(form.f_fin, class="form-control")}}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
