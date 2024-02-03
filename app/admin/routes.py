@@ -2,10 +2,15 @@ from flask import render_template, request
 from .forms import EmpleadosForm, ParcelasForm, CosechasForm
 from .forms import cosechaJCM, cosechaBAT, cosechaKM6
 from . import admin
-from .models import CosechaJCM
+from .models import CosechaJCM, CosechaBAT, Empleados
+import datetime
 
 @admin.route('/dashboard')
-def get_dashboard():
+def dashboard():
+
+    #jcm = CosechaJCM.get_cosechas()
+    #bat = CosechaBAT.get_cosechas()
+
     return render_template('dashboard.html', title = "Dashboard")
 
 @admin.route('/dashboard/cosechas-jcm', methods=['GET', 'POST'])
@@ -27,10 +32,23 @@ def cosechasjcm():
 
     return render_template('cosechas_jcm.html', title = "Cosechas - JCM", jcm = jcm, total = total)
 
-@admin.route('/dashboard/cosechas-bat')
+@admin.route('/dashboard/cosechas-bat', methods=['GET', 'POST'])
 def cosechasbat():
-    bat = cosechaBAT()
-    return render_template('cosechas_bat.html', title = "Cosechas - Buenos Aires", bat = bat)
+    bat = cosechaBAT(request.form)
+
+    encargado,n_cosecha, n_bolsas = bat.encargado.data, bat.n_cosecha.data, bat.bolsas.data
+    p1, p2, p3, p4, p5, p6, p7, p8 = bat.puesto_1.data, bat.puesto_2.data, bat.puesto_3.data, bat.puesto_4.data, bat.puesto_5.data, bat.puesto_6.data, bat.puesto_7.data, bat.puesto_8.data
+    p9, p10, p11, p12 = bat.puesto_9.data, bat.puesto_10.data, bat.puesto_11.data, bat.puesto_12.data
+
+    total = p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12
+
+    if bat.validate_on_submit():
+        cosecha_bat = CosechaBAT(encargado=encargado, n_cosecha = n_cosecha, n_bolsas=n_bolsas, p_1=p1, p_2=p2, p_3=p3, p_4=p4, p_5=p5,
+                                 p_6=p6, p_7=p7, p_8=p8, p_9=p9, p_10=p10, p_11=p11, p_12=p12, total =total)
+
+        cosecha_bat.save()
+        
+    return render_template('cosechas_bat.html', title = "Cosechas - Buenos Aires", bat = bat, total = total)
 
 @admin.route('/dashboard/cosechas-km6')
 def cosechaskm6():
@@ -42,10 +60,16 @@ def get_parcelas():
     form = ParcelasForm()
     return render_template('parcela.html', title = "Parcelas", form=form)
 
-@admin.route('/dashboard/empleados')
-def get_empleados():
-    form = EmpleadosForm()
-    return render_template('empleados.html', title = "Empleado", form = form)
+@admin.route('/dashboard/empleados', methods=['GET','POST'])
+def empleados():
+    form = EmpleadosForm(request.form)
+    nombres, apellidos,dni, telefono=form.nombres.data, form.apellidos.data, form.dni.data, form.telefono.data
+    
+    if form.validate_on_submit():
+
+        empleado = Empleados(nombres = nombres, apellidos=apellidos, dni = dni, telefono = telefono)
+        empleado.save()
+    return render_template('empleados.html', title = "Empleado", form=form)
 
 
 
