@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block container %}
+
+<h2>Lista de Encargados</h2>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">nombres completo</th>
+            <th scope="col">telefono</th>
+            <th scope="col">correo</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        {% for encargado in encargados %}
+        <tr>
+            <td scope="row">{{encargado.id}}</td>
+            <td>{{encargado.n_nombres}} {{encargado.n_apellidos}}</td>
+            <td>{{encargado.telefono}}</td>
+            <td>{{encargado.correo}}</td>
+            <td>
+                <a href="#" class="btn btn-success">Modificar</a>
+                <a href="#" class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+</table>
+
+<div class="form control">
+    <a href="{{url_for('admin.encargado_form')}}" class="btn btn-primary" >Agregar Encargado</a>
+</div>
+{% endblock%}

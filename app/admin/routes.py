@@ -1,8 +1,8 @@
 from flask import render_template, request
-from .forms import EmpleadosForm, ParcelasForm, CosechasForm
-from .forms import cosechaJCM, cosechaBAT, cosechaKM6
+#from .forms import EmpleadosForm, ParcelasForm, CosechasForm
+from .forms import EncargadoForm, ParcelaForm
 from . import admin
-from .models import CosechaJCM, CosechaBAT, Empleados
+from .models import Encargado, Parcela
 import datetime
 
 @admin.route('/dashboard')
@@ -13,7 +13,36 @@ def dashboard():
 
     return render_template('dashboard.html', title = "Dashboard")
 
-@admin.route('/dashboard/cosechas-jcm', methods=['GET', 'POST'])
+@admin.route('/dashboard/encargado-form', methods=['GET', 'POST'])
+def encargado_form():
+    form = EncargadoForm(request.form)
+
+    nombres, apellidos, telefono, correo = form.n_nombres.data, form.n_apellidos.data, form.telefono.data, form.correo.data
+    
+    if form.validate_on_submit():
+        encargado = Encargado(n_nombres=nombres, n_apellidos=apellidos, telefono = telefono, correo = correo)
+        encargado.save()
+
+
+    return render_template('encargado_form.html', title="Encargado", form=form)
+
+@admin.route('/dashboard/encargado', methods=['GET'])
+def encargado():
+    encargados = Encargado().query.all()
+    
+    return render_template('encargado.html', title="Encargados", encargados = encargados)
+
+
+@admin.route('/dashboard/parcelas')
+def get_parcelas():
+    form = ParcelaForm()
+    return render_template('parcela.html', title = "Parcelas", form=form)
+
+@admin.route('/dashboard/parcela-form')
+def parcela_form():
+    return render_template('parcela_form.html', title="Parcelas")
+
+""" @admin.route('/dashboard/cosechas-jcm', methods=['GET', 'POST'])
 def cosechasjcm():
     jcm = cosechaJCM(request.form)
 
@@ -53,14 +82,10 @@ def cosechasbat():
 @admin.route('/dashboard/cosechas-km6')
 def cosechaskm6():
     km6 = cosechaKM6()
-    return render_template('cosechas_km6.html', title = "Cosechas - Buenos Aires", km6 = km6)
+    return render_template('cosechas_km6.html', title = "Cosechas - Buenos Aires", km6 = km6) """
 
-@admin.route('/dashboard/parcelas')
-def get_parcelas():
-    form = ParcelasForm()
-    return render_template('parcela.html', title = "Parcelas", form=form)
 
-@admin.route('/dashboard/empleados', methods=['GET','POST'])
+""" @admin.route('/dashboard/empleados', methods=['GET','POST'])
 def empleados():
     form = EmpleadosForm(request.form)
     nombres, apellidos,dni, telefono=form.nombres.data, form.apellidos.data, form.dni.data, form.telefono.data
@@ -70,7 +95,7 @@ def empleados():
         empleado = Empleados(nombres = nombres, apellidos=apellidos, dni = dni, telefono = telefono)
         empleado.save()
     return render_template('empleados.html', title = "Empleado", form=form)
-
+ """
 
 
 @admin.app_errorhandler(404)

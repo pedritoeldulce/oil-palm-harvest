@@ -3,13 +3,26 @@ from wtforms import StringField, DecimalField, DateField, IntegerField, DateTime
 from wtforms.validators import DataRequired
 from wtforms.validators import (InputRequired, NumberRange)
 
-class EmpleadosForm(FlaskForm):
+
+class EncargadoForm(FlaskForm):
+    n_nombres = StringField(validators=[DataRequired(message="Ingrese el nombre")])
+    n_apellidos = StringField(validators=[DataRequired()])
+    telefono = StringField(validators=[DataRequired()])
+    correo = StringField()
+
+class ParcelaForm(FlaskForm):
+    nombre = StringField(validators=[DataRequired()])
+    direccion = StringField(validators=[DataRequired()])
+    area = DecimalField(validators=[DataRequired()], default=0)
+    n_puestos = IntegerField(default=0)
+"""
+ class EmpleadosForm(FlaskForm):
     nombres = StringField(validators=[DataRequired()])
     apellidos = StringField()
     dni = StringField(validators=[DataRequired()])
     telefono = StringField(validators=[DataRequired()])
-    """ f_inicio = DateField('Fecha de Inicio de labores')
-    f_fin = DateField('Fecha Fin de labores') """
+     f_inicio = DateField('Fecha de Inicio de labores')
+    f_fin = DateField('Fecha Fin de labores') 
     # tipo datetime lo veremos depsues
 
 
@@ -86,4 +99,6 @@ class cosechaKM6(FlaskForm):
     puesto_21 = IntegerField()
 
 class AsistenciaForm():
-    pass
+    pass 
+    
+"""

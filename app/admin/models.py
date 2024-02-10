@@ -1,7 +1,61 @@
 import datetime
 from app import db
 
-class CosechaJCM(db.Model):
+class Encargado(db. Model):
+    __tablename__="encargados"
+    id = db.Column(db.Integer, primary_key = True)
+    n_nombres = db.Column(db.String(90), nullable = False )
+    n_apellidos = db.Column(db.String(90), nullable=False)
+    telefono = db.Column(db.String(9), nullable=False)
+    correo = db.Column(db.String(90) )
+    parcelas = db.relationship("Parcela", backref="encargado", lazy = True)
+
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+        db.session.commit()
+        print("Encargado guardado", )
+
+    def __str__ (self):
+        self.n_nombre
+
+class Parcela(db.Model):
+    __tablename__="parcelas"
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(90), nullable=False)
+    direccion= db.Column(db.String(120), nullable=False)
+    area = db.Column(db.Float, nullable=False)
+    n_puestos = db.Column(db.Integer, nullable=False)
+    #clave foranea
+    encargado_id = db.Column(db.Integer, db.ForeignKey('encargados.id'), nullable=False)
+  
+
+    # lazy: Espedifica como se deben cargar los elementos relacionados, dafult select (True)
+    #    - select: los elementos deben cargarse de forma diferida cuando se accede a la propiedad por primera vez
+        
+    # backref: referencia a un nombre de relacion en cadena o una construccion backref(), que se utilizara para generar 
+    #    - automaticamente una nueva clase relacionada relationship()  que luego se refiere a esta mediante una configuracion bidireccional.
+        
+    # para aplicacione modernas se debe preferir el uso de back_populates
+    # el parámetro indica el nombre dela relacion en al direccion inversa.
+
+""" class Cosecha(db.Model):
+    __tablename__ = "cosechas"
+    id = db.Column(db.Integer, primary_key=True)
+    f_inicio = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    n_cosecha = db.Column(db.Integer)
+    puestos = db.relationship("Puesto")
+
+class Puesto(db.Model):
+    __tablename__ = "puestos"
+    id= db.Column(db.Integer, primary_key=True)
+    numero= db.Column(db.Integer)
+    cantidad = db.Column(db.Integer) 
+    cosecha_id = db.Column(db.Integer, db.ForeignKey('cosechas.id'))
+    cosecha = db.relationship("Cosecha", backref='cosecha', lazy=True)
+ """
+
+""" class CosechaJCM(db.Model):
     __tablename__ = "cosechas_jcm"
     id = db.Column(db.Integer, primary_key = True)
     encargado = db.Column(db.String(60), nullable=False)
@@ -80,4 +134,4 @@ class Empleados(db.Model):
         if not self.id:
             db.session.add(self)
         db.session.commit()
-        print("Empleado guardado")
+        print("Empleado guardado") """

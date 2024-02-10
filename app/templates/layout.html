@@ -19,26 +19,28 @@
           <a class="nav-link" href="{{url_for('admin.dashboard')}}">Inicio <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Diario</a>
+          <a class="nav-link" href="{{url_for('admin.get_parcelas')}}">Parcelas</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-            Mis Cosechas
+            Mis Parcelas
           </a>
           <div class="dropdown-menu">
             <!-- <a class="dropdown-item" href="#">Cosechas</a>
             <a class="dropdown-item" href="#">Parcelas</a> -->
-            <a class="dropdown-item" href="{{url_for('admin.cosechasjcm')}}">JCM</a>
-            <a class="dropdown-item" href="{{url_for('admin.cosechasbat')}}">Buenos aires</a>
-            <a class="dropdown-item" href="{{url_for('admin.cosechaskm6')}}">KM6</a>
+            <a class="dropdown-item" href="{{url_for('admin.get_parcelas')}}">Lista de parcelas</a>
+            <a class="dropdown-item" href="#">Buenos aires</a>
+            <a class="dropdown-item" href="#">KM6</a>
             <a class="dropdown-item" href="#">GAvilan</a>
             <a class="dropdown-item" href="#">Culebra</a>
            
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{{url_for('admin.empleados')}}">Empleados</a>
+           <!--  <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{url_for('admin.encargado')}}">Encargado</a> -->
           </div>
         </li>
-        
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('admin.encargado')}}">Encargados</a>
+        </li>
       </ul>
      
     </div>
