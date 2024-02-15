@@ -1,7 +1,37 @@
 {% extends 'layout.html' %}
 
+{% from 'helpers/_forms.html' import render_field %}
+
 {% block title %} {{title}} {% endblock %}
 
 {% block container %}
-<h2>Formulario de PArcela</h2>
+
+<form method="post">
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+    <h2>Parcela</h2>
+
+    <div class="from-control">
+        <div class="row">
+            <div class="col-6">
+                {{render_field(parcelas.nombre, class="form-control")}}
+                {{render_field(parcelas.direccion, class="form-control")}}
+
+            </div>
+            <div class="col-6">
+                {{render_field(parcelas.area, class="form-control")}}
+                {{render_field(parcelas.n_puestos, class="form-control")}}
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                {{render_field(form.encargado, class="form-control")}}
+                
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear Parcela</button>
+    <a href="{{url_for('admin.parcelas')}}" class="btn btn-danger">Cancelar</a>
+
+</form>
 {% endblock %}

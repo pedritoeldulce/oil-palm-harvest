@@ -6,33 +6,29 @@
 {% block container %}
 <h1>Lista de Parcelas</h1>
 
+{{encargados[0].n_nombres}}
 <table class="table table-hover table-dark">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Direccion</th>
+        <th scope="col">Área</th>
+        <th scope="col">Total Puestos</th>
+        <th scope="col">Encargado</th>
       </tr>
     </thead>
     <tbody>
+      {% for parcela in parcelas %}
       <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
+        <td scope="row">{{parcela.id}}</td>
+        <td>{{parcela.nombre}}</td>
+        <td>{{parcela.direccion}}</td>
+        <td>{{parcela.area}}</td>
+        <td>{{parcela.n_puestos}}</td>
+        <td>{{parcela.encargado_id}}</td>
       </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
+      {% endfor %}
     </tbody>
 </table>
 

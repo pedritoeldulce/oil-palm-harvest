@@ -16,6 +16,11 @@ class Encargado(db. Model):
         db.session.commit()
         print("Encargado guardado", )
 
+    def get_encargados(self):
+        e = Encargado().query.all()
+        return e
+    
+
     def __str__ (self):
         self.n_nombre
 
@@ -29,7 +34,17 @@ class Parcela(db.Model):
     #clave foranea
     encargado_id = db.Column(db.Integer, db.ForeignKey('encargados.id'), nullable=False)
   
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+        db.session.commit()
+        print("Parcela guardado")
 
+
+    def get_parcelas(self):
+
+        p = Parcela().query.all()
+        return p
     # lazy: Espedifica como se deben cargar los elementos relacionados, dafult select (True)
     #    - select: los elementos deben cargarse de forma diferida cuando se accede a la propiedad por primera vez
         

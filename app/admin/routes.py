@@ -28,19 +28,38 @@ def encargado_form():
 
 @admin.route('/dashboard/encargado', methods=['GET'])
 def encargado():
-    encargados = Encargado().query.all()
+    encargados = Encargado().get_encargados()
     
     return render_template('encargado.html', title="Encargados", encargados = encargados)
 
 
 @admin.route('/dashboard/parcelas')
-def get_parcelas():
-    form = ParcelaForm()
-    return render_template('parcela.html', title = "Parcelas", form=form)
+def parcelas():
+    parcelas = Parcela().get_parcelas()
+    encargados = Encargado().get_encargados()
+    print(parcelas[0].nombre)
+    
+    return render_template('parcela.html', title = "Parcelas", parcelas=parcelas, encargados = encargados)
 
-@admin.route('/dashboard/parcela-form')
+@admin.route('/dashboard/parcela-form', methods=['GET', 'POST'])
 def parcela_form():
-    return render_template('parcela_form.html', title="Parcelas")
+    parcelas = ParcelaForm(request.form)
+
+    nombre, direccion, area, n_puestos = parcelas.nombre.data, parcelas.direccion.data, parcelas.area.data, parcelas.n_puestos.data
+    encargado =  parcelas.encargado.data
+    print(type(nombre), type(direccion), type(area), type(n_puestos), type(encargado))
+
+
+    #print(type(area))
+    form = ParcelaForm()
+    form.encargado.choices =[(encargado.id) for encargado in Encargado.query.all()]
+
+    if parcelas.validate_on_submit():
+        parcela = Parcela(nombre=nombre, direccion=direccion, area=area, n_puestos=n_puestos, encargado_id=encargado)
+        parcela.save()
+
+
+    return render_template('parcela_form.html', title="Parcelas", parcelas = parcelas, form = form)
 
 """ @admin.route('/dashboard/cosechas-jcm', methods=['GET', 'POST'])
 def cosechasjcm():
