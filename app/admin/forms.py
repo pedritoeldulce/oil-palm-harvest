@@ -13,9 +13,9 @@ class EncargadoForm(FlaskForm):
 class ParcelaForm(FlaskForm):
     nombre = StringField(validators=[DataRequired()])
     direccion = StringField(validators=[DataRequired()])
-    area = DecimalField(validators=[DataRequired()], default=0)
+    area = DecimalField(validators=[DataRequired()])
     n_puestos = IntegerField(default=0)
-    encargado = SelectField('encargado', choices=[])
+    encargado = SelectField('encargado', choices=[], validators=[DataRequired()])
 """
  class EmpleadosForm(FlaskForm):
     nombres = StringField(validators=[DataRequired()])

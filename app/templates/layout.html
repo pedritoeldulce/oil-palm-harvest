@@ -51,6 +51,30 @@
 
 <div class="container">
     <div class="row">
+
+      <div class="col-md-12 mt-2">
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-success" role="alert">
+                {{message}}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+      <!-- <div class="col-md-12 col-md-offset-1">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messagess %}
+            <div class="alert alert-success" role="alert">
+              {{message}}
+            </div>
+          {% endfor %}
+        {% endif %}
+        {%endwith %}
+      </div> -->
         <div class="col-md-12">
             {% block container %} {% endblock %}
         </div>

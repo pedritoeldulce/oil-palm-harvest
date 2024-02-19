@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for, flash
 #from .forms import EmpleadosForm, ParcelasForm, CosechasForm
 from .forms import EncargadoForm, ParcelaForm
 from . import admin
@@ -22,8 +22,9 @@ def encargado_form():
     if form.validate_on_submit():
         encargado = Encargado(n_nombres=nombres, n_apellidos=apellidos, telefono = telefono, correo = correo)
         encargado.save()
+        flash("Encargado Guardado Exitosamente")
 
-
+        return redirect(url_for('admin.encargado'))
     return render_template('encargado_form.html', title="Encargado", form=form)
 
 @admin.route('/dashboard/encargado', methods=['GET'])
@@ -37,7 +38,7 @@ def encargado():
 def parcelas():
     parcelas = Parcela().get_parcelas()
     encargados = Encargado().get_encargados()
-    print(parcelas[0].nombre)
+    #print(parcelas[0].nombre)
     
     return render_template('parcela.html', title = "Parcelas", parcelas=parcelas, encargados = encargados)
 
@@ -47,17 +48,17 @@ def parcela_form():
 
     nombre, direccion, area, n_puestos = parcelas.nombre.data, parcelas.direccion.data, parcelas.area.data, parcelas.n_puestos.data
     encargado =  parcelas.encargado.data
-    print(type(nombre), type(direccion), type(area), type(n_puestos), type(encargado))
 
-
-    #print(type(area))
     form = ParcelaForm()
-    form.encargado.choices =[(encargado.id) for encargado in Encargado.query.all()]
-
-    if parcelas.validate_on_submit():
-        parcela = Parcela(nombre=nombre, direccion=direccion, area=area, n_puestos=n_puestos, encargado_id=encargado)
+    form.encargado.choices =[(encargado.id, encargado.n_nombres) for encargado in Encargado.query.all()]
+    
+    
+    if form.validate_on_submit() :
+        
+        parcela = Parcela(nombre=nombre, direccion=direccion, area=area, n_puestos=n_puestos, encargado_id=int(encargado))
         parcela.save()
-
+        flash("Parcela Registrada Exitosamente")
+        return redirect(url_for('admin.parcelas'))
 
     return render_template('parcela_form.html', title="Parcelas", parcelas = parcelas, form = form)
 
