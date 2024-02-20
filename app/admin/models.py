@@ -45,6 +45,17 @@ class Parcela(db.Model):
 
         p = Parcela().query.all()
         return p
+
+
+"""     class Cosecha(db.Model):
+
+        id = db.Column(db.Integer, primary_key = True)
+        f_inicio = db.Column(db.String, nullable = False)
+        f_fin = db.Column(db.String, nullabel = False)
+        n_cosecha = db.Column(db.Integer, nullable = False)
+        n_bolsa = db.Column(db.Integer, nullable=False) """
+
+
     # lazy: Espedifica como se deben cargar los elementos relacionados, dafult select (True)
     #    - select: los elementos deben cargarse de forma diferida cuando se accede a la propiedad por primera vez
         

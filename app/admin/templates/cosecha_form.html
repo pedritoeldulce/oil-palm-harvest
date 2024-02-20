@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+{% from 'helpers/_forms.html' import render_field %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block container %}
+
+<form method="POST">
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+    <h1>Cosechas </h1>
+    
+    <div class="form-control">
+        <div class="row">
+            <div class="col-4">
+                {{render_field(cosechas.parcela, class="form-control")}}
+            </div>
+            <div class="col-4">
+                {{render_field(cosechas.f_inicio, class="form-control")}}
+                {{render_field(cosechas.f_fin, class="form-control")}}
+            </div>
+            <div class="col-4">
+                {{render_field(cosechas.n_cosecha, class="form-control")}}
+                {{render_field(cosechas.n_bolsa, class="form-control")}}
+            </div>
+        </div>
+    </div>
+    
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+    <a href="#" class="btn btn-danger">Cancelar</a>
+</form>
+
+<h2>Lista de Cosechas</h2>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Handle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td colspan="2">Larry the Bird</td>
+        <td>@twitter</td>
+      </tr>
+    </tbody>
+  </table>
+{% endblock %}

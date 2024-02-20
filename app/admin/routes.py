@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash
-#from .forms import EmpleadosForm, ParcelasForm, CosechasForm
-from .forms import EncargadoForm, ParcelaForm
+
+from .forms import EncargadoForm, ParcelaForm, CosechaForm
 from . import admin
 from .models import Encargado, Parcela
 import datetime
@@ -61,6 +61,22 @@ def parcela_form():
         return redirect(url_for('admin.parcelas'))
 
     return render_template('parcela_form.html', title="Parcelas", parcelas = parcelas, form = form)
+
+@admin.route('/dashboard/cosecha-form', methods=['POST', 'GET'])
+def cosecha_form():
+    cosechas = CosechaForm(request.form)
+
+    id_parcela, f_inicio = cosechas.parcela.data, cosechas.f_inicio.data
+    f_fin, n_cosecha, n_bolsa = cosechas.f_fin.data, cosechas.n_cosecha.data, cosechas.n_bolsa.data
+    print(id_parcela, f_inicio, f_fin, n_bolsa, n_cosecha)
+
+    cosechas.parcela.choices = [(parcela.id, parcela.nombre) for parcela in Parcela.query.all()]
+
+    if cosechas.validate_on_submit():
+        flash("Cosecha guardado exitosamente - mentida XD")
+
+    return render_template('cosecha_form.html', title = "Cosechas", cosechas = cosechas)
+
 
 """ @admin.route('/dashboard/cosechas-jcm', methods=['GET', 'POST'])
 def cosechasjcm():

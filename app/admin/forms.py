@@ -16,6 +16,15 @@ class ParcelaForm(FlaskForm):
     area = DecimalField(validators=[DataRequired()])
     n_puestos = IntegerField(default=0)
     encargado = SelectField('encargado', choices=[], validators=[DataRequired()])
+
+class CosechaForm(FlaskForm):
+    parcela = SelectField('parcela', choices=[])
+    f_inicio = DateField()
+    f_fin = DateField()
+    n_cosecha = IntegerField(validators=[DataRequired()],default=0)
+    n_bolsa = IntegerField(validators=[DataRequired()], default=0)
+
+
 """
  class EmpleadosForm(FlaskForm):
     nombres = StringField(validators=[DataRequired()])
