@@ -33,7 +33,9 @@ class Parcela(db.Model):
     n_puestos = db.Column(db.Integer, nullable=False)
     #clave foranea
     encargado_id = db.Column(db.Integer, db.ForeignKey('encargados.id'), nullable=False)
-  
+    
+    cosechas = db.relationship("Cosecha", backref="parcela", lazy=True)
+
     def save(self):
         if not self.id:
             db.session.add(self)
@@ -47,14 +49,22 @@ class Parcela(db.Model):
         return p
 
 
-"""     class Cosecha(db.Model):
+class Cosecha(db.Model):
+    __tablename__="cosechas"
+    id = db.Column(db.Integer, primary_key = True)
+    f_inicio = db.Column(db.DateTime, nullable = False)
+    f_fin = db.Column(db.DateTime, nullable = False)
+    n_cosecha = db.Column(db.Integer, nullable = False)
+    n_bolsa = db.Column(db.Integer, nullable=False)
 
-        id = db.Column(db.Integer, primary_key = True)
-        f_inicio = db.Column(db.String, nullable = False)
-        f_fin = db.Column(db.String, nullabel = False)
-        n_cosecha = db.Column(db.Integer, nullable = False)
-        n_bolsa = db.Column(db.Integer, nullable=False) """
+    # clave foranea
+    parcela_id = db.Column(db.Integer, db.ForeignKey('parcelas.id'), nullable=False)
 
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+        db.session.commit()
+        print("Cosecha guardado")
 
     # lazy: Espedifica como se deben cargar los elementos relacionados, dafult select (True)
     #    - select: los elementos deben cargarse de forma diferida cuando se accede a la propiedad por primera vez

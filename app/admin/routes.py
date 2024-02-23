@@ -2,7 +2,8 @@ from flask import render_template, request, redirect, url_for, flash
 
 from .forms import EncargadoForm, ParcelaForm, CosechaForm
 from . import admin
-from .models import Encargado, Parcela
+from .models import Encargado, Parcela, Cosecha
+
 import datetime
 
 @admin.route('/dashboard')
@@ -68,15 +69,25 @@ def cosecha_form():
 
     id_parcela, f_inicio = cosechas.parcela.data, cosechas.f_inicio.data
     f_fin, n_cosecha, n_bolsa = cosechas.f_fin.data, cosechas.n_cosecha.data, cosechas.n_bolsa.data
-    print(id_parcela, f_inicio, f_fin, n_bolsa, n_cosecha)
-
+    print(id_parcela, type(f_inicio), f_fin, n_bolsa, n_cosecha)
+    #print(f_inicio.strftime("%Y-%m-%d"))
+    # buscar los metodos de datetime.time
     cosechas.parcela.choices = [(parcela.id, parcela.nombre) for parcela in Parcela.query.all()]
 
+    list_cosecha = Cosecha().query.all()
+
     if cosechas.validate_on_submit():
-        flash("Cosecha guardado exitosamente - mentida XD")
+        cosecha = Cosecha(f_inicio=f_inicio, f_fin=f_fin, n_cosecha=n_cosecha, n_bolsa=n_bolsa, parcela_id=int(id_parcela))
+        cosecha.save()
+        flash("Cosecha guardado exitosamente")
+        return redirect(url_for('admin.cosecha'))
 
-    return render_template('cosecha_form.html', title = "Cosechas", cosechas = cosechas)
+    return render_template('cosecha_form.html', title = "Cosechas", cosechas = cosechas, list_cosecha= list_cosecha)
 
+@admin.route('/dashboard/cosecha')
+def cosecha():
+    list_cosecha = Cosecha().query.all()
+    return render_template('cosecha.html', title="Lista de Cosechas", list_cosecha=list_cosecha)
 
 """ @admin.route('/dashboard/cosechas-jcm', methods=['GET', 'POST'])
 def cosechasjcm():

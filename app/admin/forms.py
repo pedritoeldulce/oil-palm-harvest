@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, DecimalField, DateField, IntegerField, DateTimeLocalField, StringField, SelectField, TextAreaField
 from wtforms.validators import DataRequired
 from wtforms.validators import (InputRequired, NumberRange)
-
+from datetime import datetime
 
 class EncargadoForm(FlaskForm):
     n_nombres = StringField(validators=[DataRequired(message="Ingrese el nombre")])
@@ -19,10 +19,10 @@ class ParcelaForm(FlaskForm):
 
 class CosechaForm(FlaskForm):
     parcela = SelectField('parcela', choices=[])
-    f_inicio = DateField()
-    f_fin = DateField()
-    n_cosecha = IntegerField(validators=[DataRequired()],default=0)
-    n_bolsa = IntegerField(validators=[DataRequired()], default=0)
+    f_inicio = DateField('Fecha Inicio',format='%Y-%m-%d', default=datetime.now())
+    f_fin = DateField(validators=[DataRequired(message="Falta ingresar Fecha Final")])
+    n_cosecha = IntegerField('N° Cosecha',validators=[DataRequired()],default=0)
+    n_bolsa = IntegerField('Total de Bolsas (pepa)',validators=[DataRequired()], default=0)
 
 
 """

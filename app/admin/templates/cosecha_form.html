@@ -27,37 +27,30 @@
     
 
     <button type="submit" class="btn btn-primary">Enviar</button>
-    <a href="#" class="btn btn-danger">Cancelar</a>
+    <a href="{{url_for('admin.cosecha')}}" class="btn btn-danger">Cancelar</a>
 </form>
 
-<h2>Lista de Cosechas</h2>
+<!-- <h2>Lista de Cosechas</h2>
 <table class="table table-hover">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Parcela</th>
+        <th scope="col">Fecha Inicio</th>
+        <th scope="col">N° cosecha</th>
+        <th scope="col">Puestos</th>
       </tr>
     </thead>
     <tbody>
+      {% for l in list_cosecha %}
       <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
+        <th scope="row">{{l.id}}</th>
+        <td>{{l.parcela_id}}</td>
+        <td>{{l.f_inicio.strftime("%d-%m-%Y")}}</td>
+        <td>{{l.n_cosecha}}</td>
+        <td><a href="#" class="btn btn-primary">Ver Puestos</a></td>
       </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
+      {% endfor %}
     </tbody>
-  </table>
+  </table> -->
 {% endblock %}
