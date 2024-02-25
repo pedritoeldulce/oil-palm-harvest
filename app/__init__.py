@@ -17,7 +17,10 @@ def create_app(my_settings_module):
     bootstrap.init_app(app)
     
     from app.admin import admin
+    from app.auth import auth
+
     app.register_blueprint(admin)
+    app.register_blueprint(auth)
 
     with app.app_context():
         

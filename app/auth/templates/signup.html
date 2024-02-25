@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% from 'helpers/_forms.html' import render_field %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block container %}
+
+
+<form method="POST">
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
+    <h2 class="text-center">Registrar</h2>
+    <div class="col-md-6 mx-auto">
+        
+        <div class="form-group">
+            {{render_field(form.username, class="form-control", placeholder="Ingrese su usuario")}}
+            {{render_field(form.email, class="form-control", placeholder="Ingrese su correo")}}
+        </div>
+        <div class="form-group">
+            {{render_field(form.password, class="form-control", placeholder="Ingrese su contraseña")}}
+            {{render_field(form.confirm_password, class="form-control", placeholder="Ingrese de nuevo su contraseña")}}
+        </div>
+        
+        <div class="form-check">
+            {{form.accept(class="form-check-input")}}
+            <label class="form-check-label">Acepto Terminos y condiciones</label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+        <a href="{{url_for('auth.index')}}" class="btn btn-danger">Cancelar</a>
+    </div>
+</form>
+{% endblock %}
