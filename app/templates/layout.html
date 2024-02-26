@@ -4,7 +4,7 @@
 
 
 {% block navbar%}
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #c7eaff;">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #98d5fc;">
     <a class="navbar-brand" href="#">
         <!-- <img src="{{url_for('static', filename='images/palm-oil-pedrito.png')}}" alt="" width="30" height="30">  -->
         Fundo Pedrito
@@ -52,10 +52,10 @@
 
       <div class="col-md-12 mt-2">
 
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
-            {% for message in messages %}
-              <div class="alert alert-success" role="alert">
+            {% for category, message in messages %}
+              <div class="alert alert-{{category}}" role="alert">
                 {{message}}
               </div>
             {% endfor %}

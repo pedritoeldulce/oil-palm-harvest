@@ -1,8 +1,9 @@
 import datetime
+from flask_login import UserMixin
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class Usuario(db.Model):
+class Usuario(db.Model, UserMixin):
     __tablename__="usuarios"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique = True, nullable = False)
@@ -39,3 +40,7 @@ class Usuario(db.Model):
     @classmethod
     def get_by_email(cls, email):
         return Usuario.query.filter_by(email=email).first()
+    
+    @classmethod
+    def get_by_id(cls, id):
+        return Usuario.query.filter_by(id=id).first()

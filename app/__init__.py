@@ -1,3 +1,4 @@
+import flask_login
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_wtf.csrf import CSRFProtect
@@ -8,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 bootstrap = Bootstrap()
 csrf = CSRFProtect()
+login_manager = flask_login.LoginManager()
 
 def create_app(my_settings_module):
     app = Flask(__name__)
@@ -15,9 +17,11 @@ def create_app(my_settings_module):
     db.init_app(app)
     csrf.init_app(app)
     bootstrap.init_app(app)
-    
+
+
     from app.admin import admin
     from app.auth import auth
+    login_manager.init_app(app)
 
     app.register_blueprint(admin)
     app.register_blueprint(auth)
