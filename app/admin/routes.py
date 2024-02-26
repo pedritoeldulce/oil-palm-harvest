@@ -3,10 +3,12 @@ from flask import render_template, request, redirect, url_for, flash
 from .forms import EncargadoForm, ParcelaForm, CosechaForm
 from . import admin
 from .models import Encargado, Parcela, Cosecha
-
 import datetime
+import flask_login
+
 
 @admin.route('/dashboard')
+@flask_login.login_required
 def dashboard():
 
     #jcm = CosechaJCM.get_cosechas()
@@ -15,6 +17,7 @@ def dashboard():
     return render_template('dashboard.html', title = "Dashboard")
 
 @admin.route('/dashboard/encargado-form', methods=['GET', 'POST'])
+@flask_login.login_required
 def encargado_form():
     form = EncargadoForm(request.form)
 
@@ -29,6 +32,7 @@ def encargado_form():
     return render_template('encargado_form.html', title="Encargado", form=form)
 
 @admin.route('/dashboard/encargado', methods=['GET'])
+@flask_login.login_required
 def encargado():
     encargados = Encargado().get_encargados()
     
@@ -36,6 +40,7 @@ def encargado():
 
 
 @admin.route('/dashboard/parcelas')
+@flask_login.login_required
 def parcelas():
     parcelas = Parcela().get_parcelas()
     encargados = Encargado().get_encargados()
@@ -44,6 +49,7 @@ def parcelas():
     return render_template('parcela.html', title = "Parcelas", parcelas=parcelas, encargados = encargados)
 
 @admin.route('/dashboard/parcela-form', methods=['GET', 'POST'])
+@flask_login.login_required
 def parcela_form():
     parcelas = ParcelaForm(request.form)
 
@@ -64,6 +70,7 @@ def parcela_form():
     return render_template('parcela_form.html', title="Parcelas", parcelas = parcelas, form = form)
 
 @admin.route('/dashboard/cosecha-form', methods=['POST', 'GET'])
+@flask_login.login_required
 def cosecha_form():
     cosechas = CosechaForm(request.form)
 
@@ -85,6 +92,7 @@ def cosecha_form():
     return render_template('cosecha_form.html', title = "Cosechas", cosechas = cosechas, list_cosecha= list_cosecha)
 
 @admin.route('/dashboard/cosecha')
+@flask_login.login_required
 def cosecha():
     list_cosecha = Cosecha().query.all()
     return render_template('cosecha.html', title="Lista de Cosechas", list_cosecha=list_cosecha)

@@ -22,6 +22,9 @@ def create_app(my_settings_module):
     from app.admin import admin
     from app.auth import auth
     login_manager.init_app(app)
+    login_manager.login_view = "auth.signin"
+    login_manager.login_message = 'Por favor, inicie sesion'
+    login_manager.login_message_category = "warning"
 
     app.register_blueprint(admin)
     app.register_blueprint(auth)

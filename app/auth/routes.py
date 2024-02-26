@@ -1,4 +1,4 @@
-from flask import render_template, request, flash
+from flask import render_template, request, flash, redirect, url_for
 from . import auth
 from .models import Usuario
 from .forms import LoginForm, SignupForm
@@ -22,10 +22,15 @@ def signin():
         if user and user.verificar_password(form.password.data):
             flask_login.login_user(user) # generamos una sesion
             flash("Usuario autentificado exitosamente","success")
-            return render_template('signin.html', title = "Iniciar Sesión", form = form)
-        
-        flash("Usuario o contraseña errónea", "danger")
+        else:
+            flash("Usuario o contraseña errónea", "danger")
     return render_template('signin.html', title = "Iniciar Sesión", form = form)
+
+@auth.route('/logout')
+def logout():
+    flask_login.logout_user()
+    flash("Cerraste sesión exitosamente", "success")
+    return redirect(url_for('auth.signin'))
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
