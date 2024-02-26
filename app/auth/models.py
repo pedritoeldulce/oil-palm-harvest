@@ -1,6 +1,6 @@
 import datetime
 from app import db
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class Usuario(db.Model):
     __tablename__="usuarios"
@@ -9,6 +9,9 @@ class Usuario(db.Model):
     encrypted_password = db.Column(db.String, nullable = False)
     email = db.Column(db.String(100), unique=True)
     created_at = db.Column(db.DateTime, default= datetime.datetime.now())
+
+    def verificar_password(self, password):
+        return check_password_hash(self.encrypted_password, password)
 
     @property
     def password(self):
