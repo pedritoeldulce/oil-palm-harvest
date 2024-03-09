@@ -22,6 +22,7 @@ def signin():
         if user and user.verificar_password(form.password.data):
             flask_login.login_user(user) # generamos una sesion
             flash("Usuario autentificado exitosamente","success")
+            return redirect(url_for('admin.dashboard'))
         else:
             flash("Usuario o contraseña errónea", "danger")
     return render_template('signin.html', title = "Iniciar Sesión", form = form)
