@@ -8,29 +8,28 @@
 
 <form method="post">
     <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-    <h2>Parcela</h2>
+    <h2>Editar Parcela</h2>
 
     <div class="from-control">
         <div class="row">
             <div class="col-6">
-                {{render_field(parcelas.nombre, class="form-control", placeholder="Ingrese Nombre")}}
-                {{render_field(parcelas.direccion, class="form-control", placeholder="Ingrese una dirección")}}
+                {{render_field(form.nombre, class="form-control", placeholder="Ingrese Nombre")}}
+                {{render_field(form.direccion, class="form-control", placeholder="Ingrese una dirección")}}
 
             </div>
             <div class="col-6">
-                {{render_field(parcelas.area, class="form-control", placeholder="ejemplo: 10.50")}}
-                {{render_field(parcelas.n_puestos, class="form-control")}}
+                {{render_field(form.area, class="form-control", placeholder="ejemplo: 10.50")}}
+                {{render_field(form.n_puestos, class="form-control")}}
 
             </div>
         </div>
         <div class="row">
             <div class="col-6">
                 {{render_field(form.encargado, class="form-control")}}
-                
             </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Crear Parcela</button>
+    <button type="submit" class="btn btn-primary">Editar Parcela</button>
     <a href="{{url_for('admin.parcelas')}}" class="btn btn-danger">Cancelar</a>
 
 </form>

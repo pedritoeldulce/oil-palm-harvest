@@ -11,10 +11,18 @@
         <!-- <img src="{{url_for('static', filename='images/palm-oil-pedrito.png')}}" alt="" width="30" height="30">  -->
         Fundo Pedrito
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
+
+    <div class="d-flex justify-content-end">
+      <!-- <a class="navbar-brand" href="#">
+         <img src="{{url_for('static', filename='images/palm-oil-pedrito.png')}}" alt="" width="30" height="30">  
+        {{current_user}}
+          </a> 
+      -->
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
@@ -40,21 +48,20 @@
           </div>
         </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-            Cuenta
+        <li class="nav-item">
+          <a class="nav-link " href="{{url_for('auth.logout')}}" role="button"  aria-expanded="false">
+            Cerrar Sesión
           </a>
-          <div class="dropdown-menu">
-            <!-- <a class="dropdown-item" href="#">Cosechas</a>
-            <a class="dropdown-item" href="#">Parcelas</a> -->
-            <a class="dropdown-item" href="{{url_for('auth.logout')}}">Cerrar Sesion</a>
+          <!--<div class="dropdown-menu">
+            &lt;!&ndash; <a class="dropdown-item" href="#">Cosechas</a>
+            <a class="dropdown-item" href="#">Parcelas</a> &ndash;&gt;
+            <a class="dropdown-item" href="{{url_for('auth.logout')}}">Cerrar Sesión</a>
             <a class="dropdown-item" href="{{url_for('auth.signup')}}">Registrar</a>
 
-          </div>
+          </div>-->
         </li>
-       <!--  <li class="nav-item">
-          <a class="nav-link" href="{{url_for('admin.encargado')}}">Encargados</a>
-        </li> -->
+        
+       
       </ul>
       
   {% else %}    

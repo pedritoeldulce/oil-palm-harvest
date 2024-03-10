@@ -1,15 +1,6 @@
 import datetime
 from app import db
 
-""" class Usuario(db.Model):
-    __tablename__="usuarios"
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique = True, nullable = False)
-    password = db.Column(db.String(93), nullable = False)
-    email = db.Column(db.String(100), unique=True)
-    created_at = db.Column(db.DateTime, default= datetime.datetime.now()) """
-
-# Nota: no usamos user, por ser palabra reservada.
 
 class Encargado(db. Model):
     __tablename__="encargados"
@@ -31,9 +22,6 @@ class Encargado(db. Model):
         return e
     
 
-    def __str__ (self):
-        self.n_nombre
-
 class Parcela(db.Model):
     __tablename__="parcelas"
     id = db.Column(db.Integer, primary_key=True)
@@ -46,18 +34,35 @@ class Parcela(db.Model):
     
     cosechas = db.relationship("Cosecha", backref="parcela", lazy=True)
 
-    def save(self):
-        if not self.id:
-            db.session.add(self)
-        db.session.commit()
-        print("Parcela guardado")
-
-
     def get_parcelas(self):
-
         p = Parcela().query.all()
         return p
 
+    @classmethod
+    def crear_parcela(cls, nombre, direccion, area, n_puestos, encargado_id):
+        parcela = Parcela(nombre=nombre, direccion=direccion, area=area, n_puestos=n_puestos,encargado_id=encargado_id)
+
+        db.session.add(parcela)
+        db.session.commit()
+        return parcela
+
+    @classmethod
+    def get_by_id(cls, id):
+        return Parcela.query.filter_by(id=id).first()
+
+    @classmethod
+    def updated_parcela(cls, id, nombre, direccion, area, n_puestos, encargado_id):
+        parcela = Parcela.get_by_id(id)
+
+        if parcela is None:
+            return False
+
+        parcela.nombre, parcela.direccion, parcela.area = nombre, direccion, area
+        parcela.n_puestos, parcela.encargado_id = n_puestos, encargado_id
+
+        db.session.add(parcela)
+        db.session.commit()
+        return parcela
 
 class Cosecha(db.Model):
     __tablename__="cosechas"

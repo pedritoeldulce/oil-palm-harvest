@@ -1,76 +1,92 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, abort
 
-from .forms import EncargadoForm, ParcelaForm, CosechaForm
+from .forms import EncargadoForm, ParcelaForm, CosechaForm, PuestoForm
 from . import admin
 from .models import Encargado, Parcela, Cosecha
 import datetime
-import flask_login
+from flask_login import login_required, current_user
 
 
 @admin.route('/dashboard')
-@flask_login.login_required
+@login_required
 def dashboard():
 
     #jcm = CosechaJCM.get_cosechas()
     #bat = CosechaBAT.get_cosechas()
 
-    return render_template('dashboard.html', title = "Dashboard")
+    return render_template('dashboard.html', title="Dashboard")
 
-@admin.route('/dashboard/encargado-form', methods=['GET', 'POST'])
-@flask_login.login_required
+
+@admin.route('/encargado/new', methods=['GET', 'POST'])
+@login_required
 def encargado_form():
     form = EncargadoForm(request.form)
 
     nombres, apellidos, telefono, correo = form.n_nombres.data, form.n_apellidos.data, form.telefono.data, form.correo.data
     
     if form.validate_on_submit():
-        encargado = Encargado(n_nombres=nombres, n_apellidos=apellidos, telefono = telefono, correo = correo)
+        encargado = Encargado(n_nombres=nombres, n_apellidos=apellidos, telefono=telefono, correo=correo)
         encargado.save()
-        flash("Encargado Guardado Exitosamente")
+        flash("Encargado Guardado Exitosamente","success")
 
         return redirect(url_for('admin.encargado'))
     return render_template('encargado_form.html', title="Encargado", form=form)
 
-@admin.route('/dashboard/encargado', methods=['GET'])
-@flask_login.login_required
+
+@admin.route('/encargado', methods=['GET'])
+@login_required
 def encargado():
     encargados = Encargado().get_encargados()
     
-    return render_template('encargado.html', title="Encargados", encargados = encargados)
+    return render_template('encargado.html', title="Encargados", encargados=encargados)
 
-
-@admin.route('/dashboard/parcelas')
-@flask_login.login_required
+@admin.route('/parcela')
+@login_required
 def parcelas():
-    parcelas = Parcela().get_parcelas()
+    list_parcelas = Parcela().get_parcelas()    
     encargados = Encargado().get_encargados()
-    #print(parcelas[0].nombre)
     
-    return render_template('parcela.html', title = "Parcelas", parcelas=parcelas, encargados = encargados)
+    return render_template('parcela.html', title="Parcelas", parcelas=list_parcelas, encargados=encargados)
 
-@admin.route('/dashboard/parcela-form', methods=['GET', 'POST'])
-@flask_login.login_required
+
+@admin.route('/parcela/edit/<int:parcela_id>', methods=['GET', 'POST'])
+@login_required
+def parcela_edit(parcela_id):
+
+    parcela = Parcela.query.get_or_404(parcela_id)  # get_or_404 devuelve error 404 en caso no haya encontrado
+
+    form = ParcelaForm(request.form, obj=parcela)  # cargamos el objeto en el formulario
+
+    # cargamos todos los nombre de encargados en el campo encargado del formulario Parcela
+    form.encargado.choices = [(encargado.id, encargado.n_nombres) for encargado in Encargado.query.all()]
+
+    if form.validate_on_submit():
+        parcela_updated = Parcela.updated_parcela(parcela.id, form.nombre.data, form.direccion.data, form.area.data
+                                                  , form.n_puestos.data, form.encargado.data)
+        if parcela_updated:
+            flash("Parcela actualidad Exitosamente", "success")
+            return redirect(url_for('admin.parcelas'))
+    return render_template('parcela_edit.html', title="Editar Parcela", form=form)
+
+
+@admin.route('/parcela/new', methods=['GET', 'POST'])
+@login_required
 def parcela_form():
     parcelas = ParcelaForm(request.form)
-
-    nombre, direccion, area, n_puestos = parcelas.nombre.data, parcelas.direccion.data, parcelas.area.data, parcelas.n_puestos.data
-    encargado =  parcelas.encargado.data
-
     form = ParcelaForm()
-    form.encargado.choices =[(encargado.id, encargado.n_nombres) for encargado in Encargado.query.all()]
-    
-    
-    if form.validate_on_submit() :
-        
-        parcela = Parcela(nombre=nombre, direccion=direccion, area=area, n_puestos=n_puestos, encargado_id=int(encargado))
-        parcela.save()
-        flash("Parcela Registrada Exitosamente")
+    form.encargado.choices = [(encargado.id, encargado.n_nombres) for encargado in Encargado.query.all()]
+
+    if form.validate_on_submit():        
+        parcela = Parcela.crear_parcela(parcelas.nombre.data, parcelas.direccion.data, parcelas.area.data, parcelas.n_puestos.data, parcelas.encargado.data)
+        if parcela:
+            flash("Parcela Registrada Exitosamente", "success")
         return redirect(url_for('admin.parcelas'))
 
-    return render_template('parcela_form.html', title="Parcelas", parcelas = parcelas, form = form)
+    return render_template('parcela_form.html', title="Parcelas", parcelas=parcelas, form=form)
+
 
 @admin.route('/dashboard/cosecha-form', methods=['POST', 'GET'])
-@flask_login.login_required
+@login_required
 def cosecha_form():
     cosechas = CosechaForm(request.form)
 
@@ -89,13 +105,27 @@ def cosecha_form():
         flash("Cosecha guardado exitosamente")
         return redirect(url_for('admin.cosecha'))
 
-    return render_template('cosecha_form.html', title = "Cosechas", cosechas = cosechas, list_cosecha= list_cosecha)
+    return render_template('cosecha_form.html', title="Cosechas", cosechas=cosechas, list_cosecha=list_cosecha)
+
 
 @admin.route('/dashboard/cosecha')
-@flask_login.login_required
+@login_required
 def cosecha():
     list_cosecha = Cosecha().query.all()
     return render_template('cosecha.html', title="Lista de Cosechas", list_cosecha=list_cosecha)
+
+
+@admin.route('/dashboard/puesto-form/<int:id>', methods=['GET', 'POST'])
+@admin.route('/dashboard/puesto-form')
+@login_required
+def puesto_form(id:None):
+    form = PuestoForm(request.form)
+    puesto = form.n_puesto.data
+    cantidad = form.cantidad.data
+    lado = form.lado.data
+    print(puesto, cantidad, lado)
+    return render_template('puesto_form.html', title="Puesto", form=form)
+
 
 """ @admin.route('/dashboard/cosechas-jcm', methods=['GET', 'POST'])
 def cosechasjcm():

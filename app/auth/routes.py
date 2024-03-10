@@ -2,36 +2,48 @@ from flask import render_template, request, flash, redirect, url_for
 from . import auth
 from .models import Usuario
 from .forms import LoginForm, SignupForm
-import flask_login
+from flask_login import login_user, logout_user
+
 from app import login_manager
 
+
 @login_manager.user_loader
-def load_user(id):
-    return Usuario.get_by_id(id)
+def load_user(user_id):
+    """ Permite obtener al usuario de la base de datos, se llama en cada un de
+    las peticiones
+    Utiliza el decorador user_loader"""
+
+    return Usuario.get_by_id(user_id)
+
 
 @auth.route('/')
 def index():
     return render_template('index.html', title="INDEX")
 
-@auth.route('/signin', methods=['GET','POST'])
+
+@auth.route('/signin', methods=['GET', 'POST'])
 def signin():
     form = LoginForm(request.form)
 
     if form.validate_on_submit():
+
         user = Usuario.get_by_username(form.username.data)
+
         if user and user.verificar_password(form.password.data):
-            flask_login.login_user(user) # generamos una sesion
-            flash("Usuario autentificado exitosamente","success")
+            login_user(user)
+            flash("Usuario autentificado exitosamente", "success")
             return redirect(url_for('admin.dashboard'))
         else:
             flash("Usuario o contraseña errónea", "danger")
-    return render_template('signin.html', title = "Iniciar Sesión", form = form)
+    return render_template('signin.html', title="Iniciar Sesión", form=form)
+
 
 @auth.route('/logout')
 def logout():
-    flask_login.logout_user()
+    logout_user()
     flash("Cerraste sesión exitosamente", "success")
     return redirect(url_for('auth.signin'))
+
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -39,6 +51,10 @@ def signup():
 
     if form.validate_on_submit():
         user = Usuario.crear_usuario(form.username.data, form.password.data, form.email.data)
-        flash("Usuario create exitosamente")
+
+        if user.id:
+            flash("Usuario creado exitosamente", "success")
+            login_user(user)
+            return redirect(url_for("admin.dashboard"))
 
     return render_template('signup.html', title="Registrar", form=form)

@@ -4,18 +4,21 @@ from wtforms.validators import DataRequired
 from wtforms.validators import (InputRequired, NumberRange)
 from datetime import datetime
 
+
 class EncargadoForm(FlaskForm):
     n_nombres = StringField(validators=[DataRequired(message="Ingrese el nombre")])
     n_apellidos = StringField(validators=[DataRequired()])
     telefono = StringField(validators=[DataRequired()])
     correo = StringField()
 
+
 class ParcelaForm(FlaskForm):
-    nombre = StringField(validators=[DataRequired()])
-    direccion = StringField(validators=[DataRequired()])
-    area = DecimalField(validators=[DataRequired()])
-    n_puestos = IntegerField(default=0)
-    encargado = SelectField('encargado', choices=[], validators=[DataRequired()])
+    nombre = StringField('Nombre de Parcela',validators=[DataRequired()])
+    direccion = StringField('Dirección de Parcela',validators=[DataRequired()])
+    area = DecimalField('Área (hectáreas)', validators=[DataRequired()])
+    n_puestos = IntegerField('Total de puestos',default=0)
+    encargado = SelectField('Encargado', choices=[], validators=[DataRequired()])
+   
 
 class CosechaForm(FlaskForm):
     parcela = SelectField('parcela', choices=[])
@@ -23,6 +26,12 @@ class CosechaForm(FlaskForm):
     f_fin = DateField(validators=[DataRequired(message="Falta ingresar Fecha Final")])
     n_cosecha = IntegerField('N° Cosecha',validators=[DataRequired()],default=0)
     n_bolsa = IntegerField('Total de Bolsas (pepa)',validators=[DataRequired()], default=0)
+
+
+class PuestoForm(FlaskForm):
+    n_puesto = IntegerField("Número de Puesto", validators=[DataRequired()], default=0)
+    cantidad = IntegerField("Cantidad", validators=[DataRequired()], default=0)
+    lado = SelectField("Lado Parcela", choices=[('A', 'Lado A'),('B', 'Lado B')], default='A')
 
 
 """

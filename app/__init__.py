@@ -11,19 +11,20 @@ bootstrap = Bootstrap()
 csrf = CSRFProtect()
 login_manager = flask_login.LoginManager()
 
+
 def create_app(my_settings_module):
     app = Flask(__name__)
-    app.config.from_object(my_settings_module) # carga las configuraciones
+    app.config.from_object(my_settings_module)  # carga las configuraciones
     db.init_app(app)
     csrf.init_app(app)
     bootstrap.init_app(app)
 
-
     from app.admin import admin
     from app.auth import auth
+
     login_manager.init_app(app)
     login_manager.login_view = "auth.signin"
-    login_manager.login_message = 'Por favor, inicie sesion'
+    login_manager.login_message = 'Por favor, inicie sesión'
     login_manager.login_message_category = "warning"
 
     app.register_blueprint(admin)

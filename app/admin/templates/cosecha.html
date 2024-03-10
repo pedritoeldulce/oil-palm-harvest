@@ -23,7 +23,10 @@
         <td>{{l.parcela_id}}</td>
         <td>{{l.f_inicio.strftime("%d-%m-%Y")}}</td>
         <td>{{l.n_cosecha}}</td>
-        <td><a href="#" class="btn btn-primary">Ver Puestos</a></td>
+        <td>
+          <a href="{{url_for('admin.puesto_form')}}" class="btn btn-success">Agregar Puesto</a>
+          <a href="#" class="btn btn-primary">Ver Puestos</a>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
