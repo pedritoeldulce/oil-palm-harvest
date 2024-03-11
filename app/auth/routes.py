@@ -18,7 +18,8 @@ def load_user(user_id):
 
 @auth.route('/')
 def index():
-    return render_template('index.html', title="INDEX")
+
+    return redirect(url_for('auth.signin'))
 
 
 @auth.route('/signin', methods=['GET', 'POST'])

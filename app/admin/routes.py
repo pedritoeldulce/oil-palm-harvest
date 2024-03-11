@@ -40,6 +40,7 @@ def encargado():
     
     return render_template('encargado.html', title="Encargados", encargados=encargados)
 
+
 @admin.route('/parcela')
 @login_required
 def parcelas():
@@ -67,6 +68,17 @@ def parcela_edit(parcela_id):
             flash("Parcela actualidad Exitosamente", "success")
             return redirect(url_for('admin.parcelas'))
     return render_template('parcela_edit.html', title="Editar Parcela", form=form)
+
+
+@admin.route('/parcela/delete/<int:parcela_id>')
+@login_required
+def parcela_delete(parcela_id):
+    print(parcela_id)
+    p_delete = Parcela.delete_parcela(parcela_id)
+    if p_delete:
+        flash("Parcela eliminado exitosamente", "success")
+
+    return redirect(url_for('admin.parcelas'))
 
 
 @admin.route('/parcela/new', methods=['GET', 'POST'])
@@ -100,8 +112,8 @@ def cosecha_form():
     list_cosecha = Cosecha().query.all()
 
     if cosechas.validate_on_submit():
-        cosecha = Cosecha(f_inicio=f_inicio, f_fin=f_fin, n_cosecha=n_cosecha, n_bolsa=n_bolsa, parcela_id=int(id_parcela))
-        cosecha.save()
+        c = Cosecha(f_inicio=f_inicio, f_fin=f_fin, n_cosecha=n_cosecha, n_bolsa=n_bolsa, parcela_id=int(id_parcela))
+        c.save()
         flash("Cosecha guardado exitosamente")
         return redirect(url_for('admin.cosecha'))
 

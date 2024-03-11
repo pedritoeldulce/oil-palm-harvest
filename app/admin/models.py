@@ -64,8 +64,19 @@ class Parcela(db.Model):
         db.session.commit()
         return parcela
 
+    @classmethod
+    def delete_parcela(cls, parcela_id):
+        p = Parcela.get_by_id(parcela_id)
+        print(p)
+        if p:
+            db.session.delete(p)
+            db.session.commit()
+
+        return p
+
+
 class Cosecha(db.Model):
-    __tablename__="cosechas"
+    __tablename__ = "cosechas"
     id = db.Column(db.Integer, primary_key = True)
     f_inicio = db.Column(db.DateTime, nullable = False)
     f_fin = db.Column(db.DateTime, nullable = False)
