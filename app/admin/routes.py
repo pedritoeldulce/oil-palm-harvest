@@ -37,8 +37,37 @@ def encargado_form():
 @login_required
 def encargado():
     encargados = Encargado().get_encargados()
-    
+
     return render_template('encargado.html', title="Encargados", encargados=encargados)
+
+
+@admin.route('/encargado/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def encargado_edit(id):
+    encargado = Encargado.query.get_or_404(id)
+    form = EncargadoForm(request.form, obj=encargado)
+
+    if form.validate_on_submit():
+        encargado_up = Encargado.updated_encargado(encargado.id, form.n_nombres.data, form.n_apellidos.data,
+                                                   form.telefono.data, form.correo.data )
+
+        if encargado_up:
+            flash("Encargado editado satisfacoriamnete", "success")
+            return redirect(url_for('admin.encargado'))
+        else:
+            flash("Error al editar", "danger")
+            return redirect(url_for('admin.encargado'))
+
+    return render_template('encargado_edit.html', title="Editar Encargado", form=form)
+
+
+@admin.route('/encargado/delete/<int:id>')
+@login_required
+def encargado_delete(id):
+    e = Encargado.delete_encargado(id)
+    if e:
+        flash("Encargado eliminado satisfacotiramente","success")
+    return redirect(url_for('admin.encargado'))
 
 
 @admin.route('/parcela')
@@ -73,7 +102,6 @@ def parcela_edit(parcela_id):
 @admin.route('/parcela/delete/<int:parcela_id>')
 @login_required
 def parcela_delete(parcela_id):
-    print(parcela_id)
     p_delete = Parcela.delete_parcela(parcela_id)
     if p_delete:
         flash("Parcela eliminado exitosamente", "success")
@@ -89,7 +117,8 @@ def parcela_form():
     form.encargado.choices = [(encargado.id, encargado.n_nombres) for encargado in Encargado.query.all()]
 
     if form.validate_on_submit():        
-        parcela = Parcela.crear_parcela(parcelas.nombre.data, parcelas.direccion.data, parcelas.area.data, parcelas.n_puestos.data, parcelas.encargado.data)
+        parcela = Parcela.crear_parcela(parcelas.nombre.data, parcelas.direccion.data, parcelas.area.data,
+                                        parcelas.n_puestos.data, parcelas.encargado.data)
         if parcela:
             flash("Parcela Registrada Exitosamente", "success")
         return redirect(url_for('admin.parcelas'))

@@ -9,17 +9,17 @@
 
     <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
 
-    <h2>Encargado</h2>
-    <div class="form-control">
+    <h2 class="text-center">Encargado</h2>
+    <div class="">
         <div class="row">
             <div class="col-6">
-                {{render_field(form.n_nombres, class="form-control")}}
-                {{render_field(form.n_apellidos, class="form-control")}}
+                {{render_field(form.n_nombres, class="form-control", placeholder="Ingrese los Nombres")}}
+                {{render_field(form.n_apellidos, class="form-control", placeholder="Ingrese los Apellidos")}}
                 
             </div>
             <div class="col-6">
-                {{render_field(form.telefono, class="form-control")}}
-                {{render_field(form.correo, class="form-control")}}
+                {{render_field(form.telefono, class="form-control", placeholder="Ingrese un teléfono")}}
+                {{render_field(form.correo, class="form-control", placeholder="Ingrese un correo")}}
             </div>
         </div>
     </div>

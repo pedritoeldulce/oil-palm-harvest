@@ -8,19 +8,45 @@ class Encargado(db. Model):
     n_nombres = db.Column(db.String(90), nullable = False )
     n_apellidos = db.Column(db.String(90), nullable=False)
     telefono = db.Column(db.String(9), nullable=False)
-    correo = db.Column(db.String(90) )
-    parcelas = db.relationship("Parcela", backref="encargado", lazy = True)
+    correo = db.Column(db.String(90))
+    parcelas = db.relationship("Parcela", backref="encargado", lazy=True, cascade="all,delete-orphan")
 
     def save(self):
         if not self.id:
             db.session.add(self)
         db.session.commit()
-        print("Encargado guardado", )
+        print("Encargado guardado", "success")
 
     def get_encargados(self):
         e = Encargado().query.all()
         return e
-    
+
+    @classmethod
+    def get_by_id(cls, id):
+        return Encargado.query.filter_by(id=id).first()
+
+    @classmethod
+    def updated_encargado(cls, mid, nombres, apellidos, telefono, correo):
+        e = Encargado.get_by_id(mid)
+
+        if e is None:
+            return False
+
+        e.n_nombres, e.n_apellidos, e.telefono, e.correo = nombres, apellidos, telefono, correo
+        db.session.commit()
+        return e
+
+
+    @classmethod
+    def delete_encargado(cls, encargado_id):
+        e = Encargado.get_by_id(encargado_id)
+
+        if e:
+            db.session.delete(e)
+            db.session.commit()
+
+        return e
+
 
 class Parcela(db.Model):
     __tablename__="parcelas"
@@ -40,7 +66,7 @@ class Parcela(db.Model):
 
     @classmethod
     def crear_parcela(cls, nombre, direccion, area, n_puestos, encargado_id):
-        parcela = Parcela(nombre=nombre, direccion=direccion, area=area, n_puestos=n_puestos,encargado_id=encargado_id)
+        parcela = Parcela(nombre=nombre, direccion=direccion, area=area, n_puestos=n_puestos, encargado_id=encargado_id)
 
         db.session.add(parcela)
         db.session.commit()
@@ -60,14 +86,13 @@ class Parcela(db.Model):
         parcela.nombre, parcela.direccion, parcela.area = nombre, direccion, area
         parcela.n_puestos, parcela.encargado_id = n_puestos, encargado_id
 
-        db.session.add(parcela)
         db.session.commit()
         return parcela
 
     @classmethod
     def delete_parcela(cls, parcela_id):
         p = Parcela.get_by_id(parcela_id)
-        print(p)
+
         if p:
             db.session.delete(p)
             db.session.commit()

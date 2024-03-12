@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% from 'helpers/_forms.html' import render_field %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block container %}
+<form method="post">
+
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
+    <h2 class="text-center">Editar Encargado</h2>
+    <div class="form-control">
+        <div class="row">
+            <div class="col-6">
+                {{render_field(form.n_nombres, class="form-control")}}
+                {{render_field(form.n_apellidos, class="form-control")}}
+                
+            </div>
+            <div class="col-6">
+                {{render_field(form.telefono, class="form-control")}}
+                {{render_field(form.correo, class="form-control")}}
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Editar</button>
+    <a href="{{url_for('admin.encargado')}}" class="btn btn-danger">Cancelar</a>
+</form>
+
+{% endblock %}

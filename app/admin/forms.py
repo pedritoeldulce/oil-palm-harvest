@@ -6,10 +6,10 @@ from datetime import datetime
 
 
 class EncargadoForm(FlaskForm):
-    n_nombres = StringField(validators=[DataRequired(message="Ingrese el nombre")])
-    n_apellidos = StringField(validators=[DataRequired()])
-    telefono = StringField(validators=[DataRequired()])
-    correo = StringField()
+    n_nombres = StringField('Nombres', validators=[DataRequired(message="Ingrese el nombre")])
+    n_apellidos = StringField('Apellidos', validators=[DataRequired()])
+    telefono = StringField('Teléfono', validators=[DataRequired()])
+    correo = StringField('Correo')
 
 
 class ParcelaForm(FlaskForm):
