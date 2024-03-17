@@ -4,16 +4,17 @@
 {% block title %} {{title}} {% endblock %}
 
 {% block container %}
-<h1>Lista de Cosechas</h1>
-
-<table class="table table-hover">
+<h1 class="text-center">Lista de Cosechas</h1>
+<a href="{{url_for('admin.cosecha_new')}}" class="btn btn-primary mb-2">Agregar Cosecha</a>
+<table class="table table-hover text-center">
     <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Parcela</th>
         <th scope="col">Fecha Inicio</th>
         <th scope="col">N° cosecha</th>
-        <th scope="col">Puestos</th>
+        <th scope="col">Puesto</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -24,8 +25,11 @@
         <td>{{l.f_inicio.strftime("%d-%m-%Y")}}</td>
         <td>{{l.n_cosecha}}</td>
         <td>
-          <a href="{{url_for('admin.puesto_form')}}" class="btn btn-success">Agregar Puesto</a>
-          <a href="#" class="btn btn-primary">Ver Puestos</a>
+          <a href="#" class="btn btn-secondary">Ver Puesto</a>
+        </td>
+        <td>
+          <a href="{{url_for('admin.cosecha_edit', cosecha_id = l.id)}}" class="btn btn-success">Editar</a>
+          <a href="{{url_for('admin.cosecha_delete', cosecha_id = l.id)}}" class="btn btn-danger">Eliminar</a>
         </td>
       </tr>
       {% endfor %}

@@ -36,7 +36,6 @@ class Encargado(db. Model):
         db.session.commit()
         return e
 
-
     @classmethod
     def delete_encargado(cls, encargado_id):
         e = Encargado.get_by_id(encargado_id)
@@ -52,7 +51,7 @@ class Parcela(db.Model):
     __tablename__="parcelas"
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(90), nullable=False)
-    direccion= db.Column(db.String(120), nullable=False)
+    direccion = db.Column(db.String(120), nullable=False)
     area = db.Column(db.Float, nullable=False)
     n_puestos = db.Column(db.Integer, nullable=False)
     #clave foranea
@@ -107,7 +106,6 @@ class Cosecha(db.Model):
     f_fin = db.Column(db.DateTime, nullable = False)
     n_cosecha = db.Column(db.Integer, nullable = False)
     n_bolsa = db.Column(db.Integer, nullable=False)
-
     # clave foranea
     parcela_id = db.Column(db.Integer, db.ForeignKey('parcelas.id'), nullable=False)
 
@@ -116,6 +114,41 @@ class Cosecha(db.Model):
             db.session.add(self)
         db.session.commit()
         print("Cosecha guardado")
+
+    @classmethod
+    def crea_cosecha(cls, f_inicio, f_fin, n_cosecha, n_bolsa, parcela_id):
+        cosecha = Cosecha(f_inicio=f_inicio, f_fin=f_fin, n_cosecha=n_cosecha, n_bolsa=n_bolsa, parcela_id=parcela_id)
+
+        db.session.add(cosecha)
+        db.session.commit()
+        return cosecha
+
+    @classmethod
+    def get_by_id(cls, id):
+        return Cosecha.query.filter_by(id=id).first()
+
+    @classmethod
+    def update_cosecha(cls, id, inicio, fin, n_cosecha, bolsa, parcela):
+        cosecha = Cosecha.get_by_id(id)
+        if cosecha is None:
+            return False
+
+        cosecha.f_inicio, cosecha.f_fin , cosecha.n_cosecha= inicio,fin, n_cosecha
+        cosecha.n_bolsa, cosecha.parcela_id = bolsa, parcela
+
+        db.session.commit()
+        return cosecha
+
+
+    @classmethod
+    def delete_cosecha(cls, id):
+        c_del = Cosecha.get_by_id(id)
+
+        if c_del:
+            db.session.delete(c_del)
+            db.session.commit()
+
+        return c_del
 
     # lazy: Espedifica como se deben cargar los elementos relacionados, dafult select (True)
     #    - select: los elementos deben cargarse de forma diferida cuando se accede a la propiedad por primera vez

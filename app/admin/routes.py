@@ -126,34 +126,56 @@ def parcela_form():
     return render_template('parcela_form.html', title="Parcelas", parcelas=parcelas, form=form)
 
 
-@admin.route('/dashboard/cosecha-form', methods=['POST', 'GET'])
+@admin.route('/dashboard/cosecha/new', methods=['POST', 'GET'])
 @login_required
-def cosecha_form():
+def cosecha_new():
     cosechas = CosechaForm(request.form)
 
-    id_parcela, f_inicio = cosechas.parcela.data, cosechas.f_inicio.data
-    f_fin, n_cosecha, n_bolsa = cosechas.f_fin.data, cosechas.n_cosecha.data, cosechas.n_bolsa.data
-    print(id_parcela, type(f_inicio), f_fin, n_bolsa, n_cosecha)
-    #print(f_inicio.strftime("%Y-%m-%d"))
-    # buscar los metodos de datetime.time
     cosechas.parcela.choices = [(parcela.id, parcela.nombre) for parcela in Parcela.query.all()]
 
-    list_cosecha = Cosecha().query.all()
-
     if cosechas.validate_on_submit():
-        c = Cosecha(f_inicio=f_inicio, f_fin=f_fin, n_cosecha=n_cosecha, n_bolsa=n_bolsa, parcela_id=int(id_parcela))
-        c.save()
-        flash("Cosecha guardado exitosamente")
+        c_new = Cosecha.crea_cosecha(cosechas.f_inicio.data, cosechas.f_fin.data, cosechas.n_cosecha.data,
+                                     cosechas.n_bolsa.data, cosechas.parcela.data)
+        if c_new:
+            flash("Cosecha guardado exitosamente", "success")
         return redirect(url_for('admin.cosecha'))
 
-    return render_template('cosecha_form.html', title="Cosechas", cosechas=cosechas, list_cosecha=list_cosecha)
+    return render_template('cosecha_form.html', title="Cosechas", cosechas=cosechas)
 
+
+@admin.route('/cosecha/edit/<int:cosecha_id>', methods=['GET', 'POST'])
+@login_required
+def cosecha_edit(cosecha_id):
+    cosecha = Cosecha.query.get_or_404(cosecha_id)
+    form = CosechaForm(request.form, obj=cosecha)
+    form.parcela.choices = [(parcela.id, parcela.nombre) for parcela in Parcela.query.all()]
+    if form.validate_on_submit():
+        cos_updated = Cosecha.update_cosecha(cosecha.id, form.f_inicio.data, form.f_fin.data,
+                                             form.n_cosecha.data, form.n_bolsa.data, form.parcela.data)
+
+        if cos_updated:
+            flash("Cosecha Actualizada exitosamente", "success")
+            return redirect(url_for('admin.cosecha'))
+
+    return render_template('cosecha_edit.html', title="Editar Cosecha", form=form)
+
+
+@admin.route('/cosecha/delete/<int:cosecha_id>')
+@login_required
+def cosecha_delete(cosecha_id):
+    c_delete = Cosecha.delete_cosecha(cosecha_id)
+    if c_delete:
+        flash("Cosecha eliminado exitosamente", "success")
+
+    return redirect(url_for('admin.cosecha'))
 
 @admin.route('/dashboard/cosecha')
 @login_required
 def cosecha():
     list_cosecha = Cosecha().query.all()
     return render_template('cosecha.html', title="Lista de Cosechas", list_cosecha=list_cosecha)
+
+
 
 
 @admin.route('/dashboard/puesto-form/<int:id>', methods=['GET', 'POST'])
