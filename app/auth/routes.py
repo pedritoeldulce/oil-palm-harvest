@@ -5,7 +5,7 @@ from .forms import LoginForm, SignupForm
 from flask_login import login_user, logout_user
 
 from app import login_manager
-
+from flask_login import login_required
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -19,7 +19,7 @@ def load_user(user_id):
 @auth.route('/')
 def index():
 
-    return redirect(url_for('auth.signin'))
+    return redirect(url_for('admin.dashboard'))
 
 
 @auth.route('/signin', methods=['GET', 'POST'])
