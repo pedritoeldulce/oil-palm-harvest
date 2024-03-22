@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, DecimalField, DateField, IntegerField, DateTimeLocalField, StringField, SelectField, TextAreaField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Length
 from wtforms.validators import (InputRequired, NumberRange)
 from datetime import datetime
 
@@ -8,7 +8,7 @@ from datetime import datetime
 class EncargadoForm(FlaskForm):
     n_nombres = StringField('Nombres', validators=[DataRequired(message="Ingrese el nombre")])
     n_apellidos = StringField('Apellidos', validators=[DataRequired()])
-    telefono = StringField('Teléfono', validators=[DataRequired()])
+    telefono = StringField('Teléfono', validators=[DataRequired(), Length(min=9, max=9, message="Ingresar %(min)d")])
     correo = StringField('Correo')
 
 

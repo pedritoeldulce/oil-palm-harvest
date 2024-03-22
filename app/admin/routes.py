@@ -22,15 +22,16 @@ def dashboard():
 def encargado_form():
     form = EncargadoForm(request.form)
 
-    nombres, apellidos, telefono, correo = form.n_nombres.data, form.n_apellidos.data, form.telefono.data, form.correo.data
-    
     if form.validate_on_submit():
-        encargado = Encargado(n_nombres=nombres, n_apellidos=apellidos, telefono=telefono, correo=correo)
-        encargado.save()
-        flash("Encargado Guardado Exitosamente","success")
+        encargado_n = Encargado.crear_encargado(form.n_nombres.data, form.n_apellidos.data, form.telefono.data,
+                                                form.correo.data)
+        print(encargado_n)
+        if encargado_n:
+            flash("Encargado Guardado Exitosamente", "success")
 
         return redirect(url_for('admin.encargado'))
-    return render_template('encargado_form.html', title="Encargado", form=form)
+
+    return render_template('encargado/encargado_form.html', title="Encargado", form=form)
 
 
 @admin.route('/encargado', methods=['GET'])
@@ -38,7 +39,7 @@ def encargado_form():
 def encargado():
     encargados = Encargado().get_encargados()
 
-    return render_template('encargado.html', title="Encargados", encargados=encargados)
+    return render_template('encargado/encargado.html', title="Encargados", encargados=encargados)
 
 
 @admin.route('/encargado/edit/<int:id>', methods=['GET', 'POST'])
@@ -49,16 +50,16 @@ def encargado_edit(id):
 
     if form.validate_on_submit():
         encargado_up = Encargado.updated_encargado(encargado.id, form.n_nombres.data, form.n_apellidos.data,
-                                                   form.telefono.data, form.correo.data )
+                                                   form.telefono.data, form.correo.data)
 
         if encargado_up:
-            flash("Encargado editado satisfacoriamnete", "success")
+            flash("Encargado editado satisfactoriamente", "success")
             return redirect(url_for('admin.encargado'))
         else:
             flash("Error al editar", "danger")
             return redirect(url_for('admin.encargado'))
 
-    return render_template('encargado_edit.html', title="Editar Encargado", form=form)
+    return render_template('encargado/encargado_edit.html', title="Editar Encargado", form=form)
 
 
 @admin.route('/encargado/delete/<int:id>')

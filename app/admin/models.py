@@ -3,13 +3,14 @@ from app import db
 
 
 class Encargado(db. Model):
-    __tablename__="encargados"
+    __tablename__ = "encargados"
     id = db.Column(db.Integer, primary_key = True)
     n_nombres = db.Column(db.String(90), nullable = False )
     n_apellidos = db.Column(db.String(90), nullable=False)
     telefono = db.Column(db.String(9), nullable=False)
     correo = db.Column(db.String(90))
-    parcelas = db.relationship("Parcela", backref="encargado", lazy=True, cascade="all,delete-orphan")
+    #parcelas = db.relationship("Parcela", backref="encargado", lazy=True, cascade="all,delete-orphan")
+    parcelas = db.relationship("Parcela", backref="encargado", lazy=True)
 
     def save(self):
         if not self.id:
@@ -24,6 +25,13 @@ class Encargado(db. Model):
     @classmethod
     def get_by_id(cls, id):
         return Encargado.query.filter_by(id=id).first()
+
+    @classmethod
+    def crear_encargado(cls, nombres, apellidos, tel, correo):
+        encargado = Encargado(n_nombres=nombres, n_apellidos=apellidos, telefono=tel, correo=correo)
+        db.session.add(encargado)
+        db.session.commit()
+        return encargado
 
     @classmethod
     def updated_encargado(cls, mid, nombres, apellidos, telefono, correo):
@@ -48,15 +56,16 @@ class Encargado(db. Model):
 
 
 class Parcela(db.Model):
-    __tablename__="parcelas"
+    __tablename__ = "parcelas"
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(90), nullable=False)
     direccion = db.Column(db.String(120), nullable=False)
     area = db.Column(db.Float, nullable=False)
     n_puestos = db.Column(db.Integer, nullable=False)
-    #clave foranea
-    encargado_id = db.Column(db.Integer, db.ForeignKey('encargados.id'), nullable=False)
-    
+
+    # clave foránea
+    encargado_id = db.Column(db.Integer, db.ForeignKey('encargados.id'), nullable=True)
+
     cosechas = db.relationship("Cosecha", backref="parcela", lazy=True)
 
     def get_parcelas(self):
@@ -107,7 +116,7 @@ class Cosecha(db.Model):
     n_cosecha = db.Column(db.Integer, nullable = False)
     n_bolsa = db.Column(db.Integer, nullable=False)
     # clave foranea
-    parcela_id = db.Column(db.Integer, db.ForeignKey('parcelas.id'), nullable=False)
+    parcela_id = db.Column(db.Integer, db.ForeignKey('parcelas.id'), nullable=True)
 
     def save(self):
         if not self.id:
