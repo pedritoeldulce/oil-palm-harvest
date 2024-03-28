@@ -9,14 +9,9 @@ class Encargado(db. Model):
     n_apellidos = db.Column(db.String(90), nullable=False)
     telefono = db.Column(db.String(9), nullable=False)
     correo = db.Column(db.String(90))
+
     #parcelas = db.relationship("Parcela", backref="encargado", lazy=True, cascade="all,delete-orphan")
     parcelas = db.relationship("Parcela", backref="encargado", lazy=True)
-
-    def save(self):
-        if not self.id:
-            db.session.add(self)
-        db.session.commit()
-        print("Encargado guardado", "success")
 
     def get_encargados(self):
         e = Encargado().query.all()
@@ -123,6 +118,9 @@ class Cosecha(db.Model):
             db.session.add(self)
         db.session.commit()
         print("Cosecha guardado")
+
+    def get_cosechas(self):
+        return Cosecha().query.all()
 
     @classmethod
     def crea_cosecha(cls, f_inicio, f_fin, n_cosecha, n_bolsa, parcela_id):

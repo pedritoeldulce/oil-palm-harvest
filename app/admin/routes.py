@@ -1,3 +1,4 @@
+
 from flask import render_template, request, redirect, url_for, flash, abort
 
 from .forms import EncargadoForm, ParcelaForm, CosechaForm, PuestoForm
@@ -74,10 +75,16 @@ def encargado_delete(id):
 @admin.route('/parcela')
 @login_required
 def parcelas():
-    list_parcelas = Parcela().get_parcelas()    
+    l_parcelas = Parcela().get_parcelas()
     encargados = Encargado().get_encargados()
-    
-    return render_template('parcela.html', title="Parcelas", parcelas=list_parcelas, encargados=encargados)
+
+    parcela_encargado = list(zip(l_parcelas, encargados))
+
+    # for (p_e) in parcela_encargado:
+    #     print((p_e[0].direccion, p_e[1].n_nombres))
+    # print(parcela_encargado)
+
+    return render_template('parcela.html', title="Parcelas", parcela_encargado=parcela_encargado)
 
 
 @admin.route('/parcela/edit/<int:parcela_id>', methods=['GET', 'POST'])
@@ -170,13 +177,22 @@ def cosecha_delete(cosecha_id):
 
     return redirect(url_for('admin.cosecha'))
 
+
 @admin.route('/dashboard/cosecha')
 @login_required
 def cosecha():
-    list_cosecha = Cosecha().query.all()
-    return render_template('cosecha.html', title="Lista de Cosechas", list_cosecha=list_cosecha)
+    list_cosecha = Cosecha().get_cosechas()
+    parcelas = Parcela().get_parcelas()
 
+    cosecha_parcela = list(zip(parcelas, list_cosecha))
 
+    for cp in cosecha_parcela:
+        print(cp[1].id, cp[0].nombre, cp[1].f_inicio)
+    # l_parcelas = Parcela().get_parcelas()
+    # encargados = Encargado().get_encargados()
+    #
+    # parcela_encargado = list(zip(l_parcelas, encargados))
+    return render_template('cosecha.html', title="Lista de Cosechas", cosecha_parcela=cosecha_parcela)
 
 
 @admin.route('/dashboard/puesto-form/<int:id>', methods=['GET', 'POST'])

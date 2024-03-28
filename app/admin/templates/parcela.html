@@ -16,7 +16,7 @@
 <table class="table table-hover table-dark text-center">
     <thead>
       <tr>
-        <th scope="col">ID</th>
+<!--        <th scope="col">ID</th>-->
         <th scope="col">Nombre</th>
         <th scope="col">Direccion</th>
         <th scope="col">Área</th>
@@ -26,17 +26,17 @@
       </tr>
     </thead>
     <tbody>
-      {% for parcela in parcelas %}
+      {% for pe in parcela_encargado %}
       <tr>
-        <td scope="row">{{parcela.id}}</td>
-        <td>{{parcela.nombre}}</td>
-        <td>{{parcela.direccion}}</td>
-        <td>{{parcela.area}}</td>
-        <td>{{parcela.n_puestos}}</td>
-        <td>{{parcela.encargado_id}}</td>
+<!--        <td scope="row">{{pe[0].id}}</td>-->
+        <td>{{pe[0].nombre}}</td>
+        <td>{{pe[0].direccion}}</td>
+        <td>{{pe[0].area}}</td>
+        <td>{{pe[0].n_puestos}}</td>
+        <td>{{pe[1].n_nombres}}</td>
         <td>
-          <a href="{{url_for('admin.parcela_edit', parcela_id=parcela.id)}}" class="btn btn-success">Editar</a>
-          <a href="{{url_for('admin.parcela_delete', parcela_id=parcela.id)}}" class="btn btn-danger">Eliminar</a>
+          <a href="{{url_for('admin.parcela_edit', parcela_id=pe[0].id)}}" class="btn btn-success">Editar</a>
+          <a href="{{url_for('admin.parcela_delete', parcela_id=pe[0].id)}}" class="btn btn-danger">Eliminar</a>
       </td>
       </tr>
       {% endfor %}
