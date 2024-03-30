@@ -1,4 +1,3 @@
-import datetime
 from app import db
 
 
@@ -16,6 +15,16 @@ class Encargado(db. Model):
     def get_encargados(self):
         e = Encargado().query.all()
         return e
+
+    @classmethod
+    def name_encargado(cls, a):
+        n = []
+        for pos in a:
+            e = Encargado().query.filter_by(id=pos).first()
+            n.append(e.n_nombres)
+        # mejorar esta funcion
+        #n = [encargado.n_nombres for encargado in a]
+        return n
 
     @classmethod
     def get_by_id(cls, id):
@@ -68,6 +77,13 @@ class Parcela(db.Model):
         return p
 
     @classmethod
+    def pos_encargado(cls, lista):
+
+        ll = [parcela.encargado_id for parcela in lista]
+        # retornamos la lista de posiciones
+        return ll
+
+    @classmethod
     def crear_parcela(cls, nombre, direccion, area, n_puestos, encargado_id):
         parcela = Parcela(nombre=nombre, direccion=direccion, area=area, n_puestos=n_puestos, encargado_id=encargado_id)
 
@@ -105,10 +121,10 @@ class Parcela(db.Model):
 
 class Cosecha(db.Model):
     __tablename__ = "cosechas"
-    id = db.Column(db.Integer, primary_key = True)
-    f_inicio = db.Column(db.DateTime, nullable = False)
-    f_fin = db.Column(db.DateTime, nullable = False)
-    n_cosecha = db.Column(db.Integer, nullable = False)
+    id = db.Column(db.Integer, primary_key=True)
+    f_inicio = db.Column(db.DateTime, nullable=False)
+    f_fin = db.Column(db.DateTime, nullable=False)
+    n_cosecha = db.Column(db.Integer, nullable=False)
     n_bolsa = db.Column(db.Integer, nullable=False)
     # clave foranea
     parcela_id = db.Column(db.Integer, db.ForeignKey('parcelas.id'), nullable=True)
@@ -145,7 +161,6 @@ class Cosecha(db.Model):
 
         db.session.commit()
         return cosecha
-
 
     @classmethod
     def delete_cosecha(cls, id):

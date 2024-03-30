@@ -75,16 +75,13 @@ def encargado_delete(id):
 @admin.route('/parcela')
 @login_required
 def parcelas():
-    l_parcelas = Parcela().get_parcelas()
-    encargados = Encargado().get_encargados()
+    list_parcelas = Parcela().get_parcelas()
 
-    parcela_encargado = list(zip(l_parcelas, encargados))
+    a = Parcela.pos_encargado(list_parcelas)  # lista de posiciones
+    nombres = Encargado.name_encargado(a)  # lista de nombres
 
-    # for (p_e) in parcela_encargado:
-    #     print((p_e[0].direccion, p_e[1].n_nombres))
-    # print(parcela_encargado)
-
-    return render_template('parcela.html', title="Parcelas", parcela_encargado=parcela_encargado)
+    par_nom = list(zip(list_parcelas, nombres))
+    return render_template('parcela.html', title="Parcelas", parcela_encargado=par_nom)
 
 
 @admin.route('/parcela/edit/<int:parcela_id>', methods=['GET', 'POST'])
