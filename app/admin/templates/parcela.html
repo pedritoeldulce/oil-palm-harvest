@@ -10,7 +10,11 @@
 </div>
 
 <div class="form control mb-2">
-    <a href="{{url_for('admin.parcela_form')}}" class="btn btn-primary" >Agregar Parcela</a>
+    <a href="{{url_for('admin.parcela_form')}}" class="btn btn-info" >
+      
+      <img src="{{url_for('static', filename='images/parcela.png')}}" height="33" alt="" >
+      Nueva Parcela
+    </a>
 </div>
 
 <table class="table table-hover table-dark text-center">
@@ -18,8 +22,8 @@
       <tr>
 <!--        <th scope="col">ID</th>-->
         <th scope="col">Nombre</th>
-        <th scope="col">Direccion</th>
-        <th scope="col">Área</th>
+        <th scope="col">Dirección</th>
+        <th scope="col">Área (Ha)</th>
         <th scope="col">Total Puestos</th>
         <th scope="col">Encargado</th>
         <th scope="col"></th>
@@ -35,8 +39,13 @@
         <td>{{pe[0].n_puestos}}</td>
         <td>{{pe[1]}}</td>
         <td>
-          <a href="{{url_for('admin.parcela_edit', parcela_id=pe[0].id)}}" class="btn btn-success">Editar</a>
-          <a href="{{url_for('admin.parcela_delete', parcela_id=pe[0].id)}}" class="btn btn-danger">Eliminar</a>
+          <a href="{{url_for('admin.parcela_edit', parcela_id=pe[0].id)}}" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Editar">
+            <img src="{{url_for('static', filename='images/editar.png')}}" height="22" alt="" >
+          </a>
+          
+          <a href="{{url_for('admin.parcela_delete', parcela_id=pe[0].id)}}" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar">
+            <img src="{{url_for('static', filename='images/borrar.png')}}" height="22" alt="" >
+          </a>
       </td>
       </tr>
       {% endfor %}
