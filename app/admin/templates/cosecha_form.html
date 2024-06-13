@@ -5,11 +5,11 @@
 
 {% block container %}
 
-<form method="POST">
+<form method="POST" >
     <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-    <h1>Cosechas </h1>
+    <h1 class="text-center mt-5">Cosechas</h1>
     
-    <div class="form-control">
+    <div class="">
         <div class="row">
             <div class="col-4">
                 {{render_field(cosechas.parcela, class="form-control")}}
@@ -25,32 +25,10 @@
         </div>
     </div>
     
-
-    <button type="submit" class="btn btn-primary">Enviar</button>
-    <a href="{{url_for('admin.cosecha')}}" class="btn btn-danger">Cancelar</a>
+    <div class="d-flex justify-content-center mt-2">
+      <button type="submit" class="btn btn-primary m-1">Crear</button>
+      <a href="{{url_for('admin.cosecha')}}" class="btn btn-danger m-1">Cancelar</a>
+    </div>
 </form>
 
-<!-- <h2>Lista de Cosechas</h2>
-<table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Parcela</th>
-        <th scope="col">Fecha Inicio</th>
-        <th scope="col">N° cosecha</th>
-        <th scope="col">Puestos</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for l in list_cosecha %}
-      <tr>
-        <th scope="row">{{l.id}}</th>
-        <td>{{l.parcela_id}}</td>
-        <td>{{l.f_inicio.strftime("%d-%m-%Y")}}</td>
-        <td>{{l.n_cosecha}}</td>
-        <td><a href="#" class="btn btn-primary">Ver Puestos</a></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table> -->
 {% endblock %}

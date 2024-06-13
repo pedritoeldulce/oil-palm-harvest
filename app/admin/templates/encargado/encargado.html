@@ -4,15 +4,18 @@
 
 {% block container %}
 
-<h2 class="text-center">Lista de Encargados</h2>
+<h2 class="text-center mt-5">Lista de Encargados</h2>
 
 <div class="mb-2">
-    <a href="{{url_for('admin.encargado_form')}}" class="btn btn-primary" >Agregar Encargado</a>
+    <a href="{{url_for('admin.encargado_form')}}" class="btn btn-info" >
+      <img src="{{url_for('static', filename='images/nuevo_trabajador.png')}}" height="33" alt="" >
+      Nuevo Encargado
+    </a>
 </div>
 <table class="table table-hover">
     <thead>
         <tr>
-            <th scope="col">#</th>
+            <!-- <th scope="col">#</th> -->
             <th scope="col">nombres completo</th>
             <th scope="col">telefono</th>
             <th scope="col">correo</th>
@@ -23,17 +26,19 @@
     <tbody>
         {% for encargado in encargados %}
         <tr>
-            <td scope="row">{{encargado.id}}</td>
+            <!-- <td scope="row">{{encargado.id}}</td> -->
             <td>{{encargado.n_nombres}} {{encargado.n_apellidos}}</td>
             <td>{{encargado.telefono}}</td>
             <td>{{encargado.correo}}</td>
             <td>
 
 
-                <a href="{{url_for('admin.encargado_edit', id=encargado.id)}}" class="btn btn-success">Modificar</a>
+                <a href="{{url_for('admin.encargado_edit', id=encargado.id)}}" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Editar">
+                  <img src="{{url_for('static', filename='images/editar.png')}}" height="22" alt="" >
+                </a>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-                      Eliminar
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                      <img src="{{url_for('static', filename='images/borrar.png')}}" height="22" alt="" >
                     </button>
 
                     <!-- Modal -->
@@ -58,8 +63,6 @@
                       </div>
                     </div>
 
-
-<!--                <a href="{{url_for('admin.encargado_delete', id=encargado.id)}}" class="btn btn-danger">Eliminar</a>-->
             </td>
         </tr>
         {% endfor %}

@@ -23,7 +23,8 @@ class ParcelaForm(FlaskForm):
 class CosechaForm(FlaskForm):
     parcela = SelectField('parcela', choices=[])
     f_inicio = DateField('Fecha Inicio',format='%Y-%m-%d', default=datetime.now())
-    f_fin = DateField(validators=[DataRequired(message="Falta ingresar Fecha Final")])
+    f_fin = DateField('Fecha Final',format='%Y-%m-%d', default=datetime.now())
+    # f_fin = DateField('Fecha Final',validators=[DataRequired(message="Falta ingresar Fecha Final")])
     n_cosecha = IntegerField('N° Cosecha',validators=[DataRequired()],default=0)
     n_bolsa = IntegerField('Total de Bolsas (pepa)',validators=[DataRequired()], default=0)
 

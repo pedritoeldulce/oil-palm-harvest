@@ -4,8 +4,13 @@
 {% block title %} {{title}} {% endblock %}
 
 {% block container %}
-<h1 class="text-center">Lista de Cosechas</h1>
-<a href="{{url_for('admin.cosecha_new')}}" class="btn btn-primary mb-2">Agregar Cosecha</a>
+<h1 class="text-center mt-5">Lista de Cosechas</h1>
+<div class="mb-2">  
+  <a href="{{url_for('admin.cosecha_new')}}" class="btn btn-info">
+    <img src="{{url_for('static', filename='images/palm-oil-pedrito.png')}}" height="33" alt="" >
+    Agregar Cosecha
+  </a>
+</div>
 <table class="table table-hover text-center">
     <thead>
       <tr>
@@ -25,11 +30,15 @@
         <td>{{cp[1].f_inicio.strftime("%d-%m-%Y")}}</td>
         <td>{{cp[1].n_cosecha}}</td>
         <td>
-          <a href="#" class="btn btn-secondary">Ver Puesto</a>
+          <a href="#" class="btn btn-primary">Ver Puesto</a>
         </td>
         <td>
-          <a href="{{url_for('admin.cosecha_edit', cosecha_id = cp[1].id)}}" class="btn btn-success">Editar</a>
-          <a href="{{url_for('admin.cosecha_delete', cosecha_id = cp[1].id)}}" class="btn btn-danger">Eliminar</a>
+          <a href="{{url_for('admin.cosecha_edit', cosecha_id = cp[1].id)}}" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Editar">
+            <img src="{{url_for('static', filename='images/editar.png')}}" height="22" alt="" >
+          </a>
+          <a href="{{url_for('admin.cosecha_delete', cosecha_id = cp[1].id)}}" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar">
+            <img src="{{url_for('static', filename='images/Borrar.png')}}" height="22" alt="" >
+          </a>
         </td>
       </tr>
       {% endfor %}
