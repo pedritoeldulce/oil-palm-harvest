@@ -8,7 +8,7 @@
 
 <form method="post">
     <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-    <h2>Editar Parcela</h2>
+    <h2 class="text-center mt-5">Editar Parcela</h2>
 
     <div class="from-control">
         <div class="row">
@@ -29,8 +29,10 @@
             </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Editar Parcela</button>
-    <a href="{{url_for('admin.parcelas')}}" class="btn btn-danger">Cancelar</a>
+    <div class="d-flex justify-content-center mt-2">
+        <button type="submit" class="btn btn-primary m-1">Editar Parcela</button>
+        <a href="{{url_for('admin.parcelas')}}" class="btn btn-danger m-1">Cancelar</a>
+    </div>
 
 </form>
 {% endblock %}

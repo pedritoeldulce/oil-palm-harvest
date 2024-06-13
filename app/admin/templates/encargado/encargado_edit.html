@@ -9,8 +9,8 @@
 
     <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
 
-    <h2 class="text-center">Editar Encargado</h2>
-    <div class="form-control">
+    <h2 class="text-center mt-5">Editar Encargado</h2>
+    <div class="">
         <div class="row">
             <div class="col-6">
                 {{render_field(form.n_nombres, class="form-control")}}
@@ -23,8 +23,10 @@
             </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Editar</button>
-    <a href="{{url_for('admin.encargado')}}" class="btn btn-danger">Cancelar</a>
+    <div class="d-flex justify-content-center mt-2">
+        <button type="submit" class="btn btn-primary m-1">Editar</button>
+        <a href="{{url_for('admin.encargado')}}" class="btn btn-danger m-1">Cancelar</a>
+    </div>
 </form>
 
 {% endblock %}
